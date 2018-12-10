@@ -1,0 +1,169 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect --mysql root@localhost
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 4
+Server version: 5.5.61 MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306  SQL > \help
+The Shell Help is organized in categories and topics. To get help for a
+specific category or topic use: \? <pattern>
+
+The <pattern> argument should be the name of a category or a topic.
+
+The pattern is a filter to identify topics for which help is required, it can
+use the following wildcards:
+
+- ? matches any single charecter.
+- * matches any character sequence.
+
+The following are the main help categories:
+
+ - Shell Commands Provides details about the available built-in shell commands.
+ - SQL Syntax     Entry point to retrieve syntax help on SQL statements.
+
+The available topics include:
+
+- The available shell commands.
+- Any word that is part of an SQL statement.
+
+SHELL COMMANDS
+
+The shell commands allow executing specific operations including updating the
+shell configuration.
+
+The following shell commands are available:
+
+ - \                   Start multi-line input when in SQL mode.
+ - \connect    (\c)    Connects the shell to a MySQL server and assigns the
+                       global session.
+ - \exit               Exits the MySQL Shell, same as \quit.
+ - \G                  Send command to mysql server, display result vertically.
+ - \g                  Send command to mysql server.
+ - \help       (\?,\h) Prints help information about a specific topic.
+ - \history            View and edit command line history.
+ - \js                 Switches to JavaScript processing mode.
+ - \nowarnings (\w)    Don't show warnings after every statement.
+ - \option             Allows working with the available shell options.
+ - \py                 Switches to Python processing mode.
+ - \quit       (\q)    Exits the MySQL Shell.
+ - \reconnect          Reconnects the global session.
+ - \rehash             Refresh the autocompletion cache.
+ - \source     (\.)    Loads and executes a script from a file.
+ - \sql                Switches to SQL processing mode.
+ - \status     (\s)    Print information about the current global session.
+ - \use        (\u)    Sets the active schema.
+ - \warnings   (\W)    Show warnings after every statement.
+
+EXAMPLES
+\? sql syntax
+      Displays the main SQL help categories.
+
+\? select
+      Displays information about the SELECT SQL statement.
+
+ MySQL  localhost:3306  SQL > insert into venta(totalventa, precio_neto)
+                          ... values(10000,5000);
+ERROR: 1046 (3D000): No database selected
+
+ MySQL  localhost:3306  SQL > \use northwind
+Default schema set to `northwind`.
+Fetching table and column names from `northwind` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  northwind  SQL > insert into venta(totalventa, precio_neto) values(10000,5000);
+Query OK, 1 row affected (0.0909 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from venta;
++---------+------------+-------------+
+| idventa | totalventa | precio_neto |
++---------+------------+-------------+
+|       1 |      10000 |        5000 |
++---------+------------+-------------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from ganacias;
+ERROR: 1146 (42S02): Table 'northwind.ganacias' doesn't exist
+
+ MySQL  localhost:3306  northwind  SQL > select * from ganancias;
++---------+----------+
+| idventa | ganancia |
++---------+----------+
+|       1 |     5000 |
++---------+----------+
+1 row in set (0.0006 sec)
+
+ MySQL  localhost:3306  northwind  SQL > update ventas set totalventa =  7000;
+ERROR: 1146 (42S02): Table 'northwind.ventas' doesn't exist
+
+ MySQL  localhost:3306  northwind  SQL > update venta set totalventa =  7000;
+Query OK, 1 row affected (0.1814 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+
+ MySQL  localhost:3306  northwind  SQL > select * from venta;
++---------+------------+-------------+
+| idventa | totalventa | precio_neto |
++---------+------------+-------------+
+|       1 |       7000 |        5000 |
++---------+------------+-------------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from ganancias;
++---------+----------+
+| idventa | ganancia |
++---------+----------+
+|       1 |     2000 |
++---------+----------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  northwind  SQL > insert into venta(totalventa, precio_neto) values(10000,5000);
+Query OK, 1 row affected (0.0250 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from venta;
++---------+------------+-------------+
+| idventa | totalventa | precio_neto |
++---------+------------+-------------+
+|       1 |       7000 |        5000 |
+|       2 |      10000 |        5000 |
++---------+------------+-------------+
+2 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > delete from venta where idventa = 2;
+ERROR: 1054 (42S22): Unknown column 'olod.idventa' in 'where clause'
+
+ MySQL  localhost:3306  northwind  SQL > delete from venta where idventa = 2;
+Query OK, 1 row affected (0.0375 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from venta;
++---------+------------+-------------+
+| idventa | totalventa | precio_neto |
++---------+------------+-------------+
+|       1 |       7000 |        5000 |
++---------+------------+-------------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  northwind  SQL > select * from ganancias;
++---------+----------+
+| idventa | ganancia |
++---------+----------+
+|       1 |     2000 |
++---------+----------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  northwind  SQL > THE END, DOC

@@ -1,0 +1,173 @@
+MySQL Shell 8.0.12
+
+Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect --mysql root@localhost
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 4
+Server version: 5.5.61 MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306  SQL > \use evaluacion_3
+
+
+
+
+Default schema set to `evaluacion_3`.
+Fetching table and column names from `evaluacion_3` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306  evaluacion_3  SQL > CREATE TABLE(idempleados int,
+                                        ... nombre varchar(30),
+                                        ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(idempleados int,
+nombre varchar(30),' at line 1
+
+ MySQL  localhost:3306  evaluacion_3  SQL > CREATE TABLE empleados(
+                                        ... idempleados int primary key not null,
+                                        ... nombre varchar(30),
+                                        ... apellido varchar(50),
+                                        ... fecha_nacimiento date,
+                                        ... salario int;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 6
+
+ MySQL  localhost:3306  evaluacion_3  SQL > CREATE TABLE empleados( idempleados int primary key auto_increment, nombre varchar(30), apellido varchar(50), fecha_nacimiento date, salario int, rfc varchar(13));
+Query OK, 0 rows affected (0.0390 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > desc empleados;
++------------------+-------------+------+-----+---------+----------------+
+| Field            | Type        | Null | Key | Default | Extra          |
++------------------+-------------+------+-----+---------+----------------+
+| idempleados      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre           | varchar(30) | YES  |     | NULL    |                |
+| apellido         | varchar(50) | YES  |     | NULL    |                |
+| fecha_nacimiento | date        | YES  |     | NULL    |                |
+| salario          | int(11)     | YES  |     | NULL    |                |
+| rfc              | varchar(13) | YES  |     | NULL    |                |
++------------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.0049 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > ALTER TABLE empleados add apellido_mat varchar(50) after apellido;
+Query OK, 0 rows affected (0.0793 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306  evaluacion_3  SQL > desc empleados;
++------------------+-------------+------+-----+---------+----------------+
+| Field            | Type        | Null | Key | Default | Extra          |
++------------------+-------------+------+-----+---------+----------------+
+| idempleados      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre           | varchar(30) | YES  |     | NULL    |                |
+| apellido         | varchar(50) | YES  |     | NULL    |                |
+| apellido_mat     | varchar(50) | YES  |     | NULL    |                |
+| fecha_nacimiento | date        | YES  |     | NULL    |                |
+| salario          | int(11)     | YES  |     | NULL    |                |
+| rfc              | varchar(13) | YES  |     | NULL    |                |
++------------------+-------------+------+-----+---------+----------------+
+7 rows in set (0.0057 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha, salario)
+                                        ... values('Juan','Perez','Jolote', '1990-9-12', 10000);
+ERROR: 1054 (42S22): Unknown column 'fecha' in 'field list'
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Juan','Perez','Jolote', '1990-9-12', 10000);
+Query OK, 1 row affected (0.0532 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from emepleados;
+ERROR: 1146 (42S02): Table 'evaluacion_3.emepleados' doesn't exist
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from empleados;
++-------------+--------+----------+--------------+------------------+---------+--------------+
+| idempleados | nombre | apellido | apellido_mat | fecha_nacimiento | salario | rfc          |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+|           1 | Juan   | Perez    | Jolote       | 1990-09-12       |   10000 | PeJJ19900912 |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Juan','Perez','Jolote', '1990-9-12', 15000);
+Query OK, 1 row affected (0.0186 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from empleados;
++-------------+--------+----------+--------------+------------------+---------+--------------+
+| idempleados | nombre | apellido | apellido_mat | fecha_nacimiento | salario | rfc          |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+|           1 | Juan   | Perez    | Jolote       | 1990-09-12       |   10000 | PeJJ19900912 |
+|           2 | Juan   | Perez    | Jolote       | 1990-09-12       |   15000 | PeJJ19900912 |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+2 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Juan','Perez','Jolote', '1990-9-12', 1500000);
+Query OK, 1 row affected (0.0238 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from empleados;
++-------------+--------+----------+--------------+------------------+---------+--------------+
+| idempleados | nombre | apellido | apellido_mat | fecha_nacimiento | salario | rfc          |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+|           1 | Juan   | Perez    | Jolote       | 1990-09-12       |   10000 | PeJJ19900912 |
+|           2 | Juan   | Perez    | Jolote       | 1990-09-12       |   15000 | PeJJ19900912 |
+|           3 | Juan   | Perez    | Jolote       | 1990-09-12       | 1500000 | PeJJ19900912 |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+3 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Juan','Perez','Jolote', '1990-9-12', 1500000);
+Query OK, 1 row affected (0.0255 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from empleados;
++-------------+--------+----------+--------------+------------------+---------+--------------+
+| idempleados | nombre | apellido | apellido_mat | fecha_nacimiento | salario | rfc          |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+|           1 | Juan   | Perez    | Jolote       | 1990-09-12       |   10000 | PeJJ19900912 |
+|           2 | Juan   | Perez    | Jolote       | 1990-09-12       |   15000 | PeJJ19900912 |
+|           3 | Juan   | Perez    | Jolote       | 1990-09-12       | 1500000 | PeJJ19900912 |
+|           4 | Juan   | Perez    | Jolote       | 1990-09-12       | 1500000 | PEJJ19900912 |
++-------------+--------+----------+--------------+------------------+---------+--------------+
+4 rows in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Juan','Perez','Jolote', '1990-9-12', 1500);
+ERROR: 1644 (45000): PAY MORE YOU PENNY PINCHER
+
+ MySQL  localhost:3306  evaluacion_3  SQL > CREATE TABLE salarios(
+                                        ... total_salarios int);
+Query OK, 0 rows affected (0.2294 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from salarios;
+Empty set (0.0008 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into salarios values(0);
+Query OK, 1 row affected (0.0193 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from salarios;
++----------------+
+| total_salarios |
++----------------+
+|              0 |
++----------------+
+1 row in set (0.0003 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha, salario) values('Sergio','Monos','Pollon', '1998-9-12', 1000000);
+ERROR: 1054 (42S22): Unknown column 'fecha' in 'field list'
+
+ MySQL  localhost:3306  evaluacion_3  SQL > insert into empleados(nombre,apellido,apellido_mat, fecha_nacimiento, salario) values('Sergio','Monos','Pollon', '1998-9-12', 1000000);
+Query OK, 1 row affected (0.0415 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL > select * from salarios;
++----------------+
+| total_salarios |
++----------------+
+|        4025000 |
++----------------+
+1 row in set (0.0002 sec)
+
+ MySQL  localhost:3306  evaluacion_3  SQL >
